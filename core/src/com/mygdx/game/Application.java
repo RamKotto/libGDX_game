@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -18,8 +19,11 @@ public class Application extends ApplicationAdapter {
 	@Override
 	public void render () {
 		ScreenUtils.clear(0, 1, 1, 0.5f);
+		float x = Gdx.input.getX();
+		float y = Gdx.graphics.getHeight() - Gdx.input.getY();
 		batch.begin();
-		batch.draw(img, 0, 0);
+		batch.draw(img, 0, 0 );
+		batch.draw(img, x, y);
 		batch.end();
 	}
 	
