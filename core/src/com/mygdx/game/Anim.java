@@ -2,10 +2,12 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Anim {
     private Texture img;
+    private TextureAtlas atlas;
     private Animation<TextureRegion> anm;
     private float time;
 
@@ -37,6 +39,13 @@ public class Anim {
         anm.setPlayMode(playMode);
     }
 
+    //for atlas   "atlas/run_atlas.atlas"
+    public Anim (String name, float frameDuration, Animation.PlayMode playMode) {
+        atlas = new TextureAtlas(name);
+        anm = new Animation<TextureRegion>(frameDuration, atlas.findRegions("run"));
+        anm.setPlayMode(playMode);
+    }
+
     public TextureRegion getFrame() {
         return anm.getKeyFrame(time);
     }
@@ -58,6 +67,13 @@ public class Anim {
     }
 
     public void dispose() {
-        img.dispose();
+        if (img != null) {
+            System.out.println("img was disposed");
+            img.dispose();
+        }
+        if (atlas != null) {
+            System.out.println("atlas was disposed");
+            atlas.dispose();
+        }
     }
 }

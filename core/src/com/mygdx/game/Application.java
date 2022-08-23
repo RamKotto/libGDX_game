@@ -11,13 +11,13 @@ public class Application extends ApplicationAdapter {
     SpriteBatch batch;
     int click;
     Anim animation;
-    boolean lookRight = false;
+    boolean lookRight = true;
     float x;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        animation = new Anim("StormRaiser.png", 5, 5, 1 / 15f, Animation.PlayMode.LOOP);
+        animation = new Anim("atlas/run_atlas.atlas", 1 / 10f, Animation.PlayMode.LOOP);
     }
 
     @Override
@@ -38,18 +38,18 @@ public class Application extends ApplicationAdapter {
         if (x >= windowWidth - animation.getFrame().getRegionWidth()) lookRight = false;
         if (x <= 0) lookRight = true;
 
-        if (!animation.getFrame().isFlipX() && lookRight) {
+        if (animation.getFrame().isFlipX() && lookRight) {
             animation.getFrame().flip(true, false);
         }
 
-        if (animation.getFrame().isFlipX() && !lookRight) {
+        if (!animation.getFrame().isFlipX() && !lookRight) {
             animation.getFrame().flip(true, false);
         }
 
         if (!lookRight) {
-            x -= 1;
+            x -= 5;
         } else {
-            x += 1;
+            x += 5;
         }
 
         batch.begin();
