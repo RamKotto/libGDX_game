@@ -11,7 +11,7 @@ public class Application extends ApplicationAdapter {
     SpriteBatch batch;
     int click;
     Anim animation;
-    boolean dir = false;
+    boolean lookRight = false;
     float x;
 
     @Override
@@ -33,33 +33,23 @@ public class Application extends ApplicationAdapter {
 
         float windowWidth = Gdx.graphics.getWidth();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-            dir = true;
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-            dir = false;
-        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) lookRight = false;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) lookRight = true;
+        if (x >= windowWidth - animation.getFrame().getRegionWidth()) lookRight = false;
+        if (x <= 0) lookRight = true;
 
-        if (!animation.getFrame().isFlipX() && !dir) {
+        if (!animation.getFrame().isFlipX() && lookRight) {
             animation.getFrame().flip(true, false);
         }
 
-        if (animation.getFrame().isFlipX() && dir) {
+        if (animation.getFrame().isFlipX() && !lookRight) {
             animation.getFrame().flip(true, false);
         }
 
-        if (!dir) {
-            if (x < windowWidth - animation.getFrame().getRegionWidth()) {
-                x += 5;
-            } else {
-                dir = true;
-            }
-        } else if (dir) {
-            if (x > 0) {
-                x -= 5;
-            } else {
-                dir = false;
-            }
+        if (!lookRight) {
+            x -= 1;
+        } else {
+            x += 1;
         }
 
         batch.begin();
