@@ -4,10 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Anim;
@@ -23,18 +27,25 @@ public class GameScreen implements Screen {
     private Rectangle endGameRec;
     private ShapeRenderer shapeRenderer;
     float windowWidth = Gdx.graphics.getWidth();
+    private OrthographicCamera camera;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer mapRender;
 
     public GameScreen(Main game) {
         animation = new Anim("atlas/run_atlas.atlas", 1 / 10f, Animation.PlayMode.LOOP);
         this.game = game;
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        img = new Texture("wc3logos/alianceSmall.png");
+        img = new Texture("wc3logos/allianceSmall.png");
         endGameRec = new Rectangle(
                 (float) (Gdx.graphics.getWidth() / 2) - (float) (img.getWidth() / 2),
                 Gdx.graphics.getHeight() - img.getHeight() * 2,
                 img.getWidth(), img.getHeight()
         );
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        TmxMapLoader tm = new TmxMapLoader();
+        map = tm.load("map/карта1.tmx");
+        mapRender = new OrthogonalTiledMapRenderer(map);
     }
 
     @Override
@@ -44,6 +55,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        camera.update();
         ScreenUtils.clear(Color.CYAN);
         animation.setTime(Gdx.graphics.getDeltaTime());
 
@@ -75,10 +87,14 @@ public class GameScreen implements Screen {
             }
         }
 
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.draw(animation.getFrame(), xCoordinateForAnimation, 0);
         batch.draw(img, endGameRec.x, endGameRec.y, endGameRec.width, endGameRec.height);
         batch.end();
+
+        mapRender.setView(camera);
+        mapRender.render();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
@@ -88,6 +104,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
 
     }
 
