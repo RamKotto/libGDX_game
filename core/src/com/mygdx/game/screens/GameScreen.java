@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -23,6 +24,7 @@ public class GameScreen implements Screen {
     private Texture img;
     private Anim animation;
     private boolean lookRight = true;
+    final float STEP = 150;
     private float xCoordinateForAnimation;
     private Rectangle endGameRec;
     private ShapeRenderer shapeRenderer;
@@ -30,6 +32,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRender;
+    private Rectangle mapSize;
 
     public GameScreen(Main game) {
         animation = new Anim("atlas/run_atlas.atlas", 1 / 10f, Animation.PlayMode.LOOP);
@@ -43,9 +46,14 @@ public class GameScreen implements Screen {
                 img.getWidth(), img.getHeight()
         );
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        TmxMapLoader tm = new TmxMapLoader();
-        map = tm.load("map/карта1.tmx");
+        map = new TmxMapLoader().load("map/карта1.tmx");
         mapRender = new OrthogonalTiledMapRenderer(map);
+        // map.getLayers().get("объекты").getObjects().getByType(RectangleMapObject.class);  // выбор по типу
+        RectangleMapObject tmp = (RectangleMapObject) map.getLayers().get("объекты").getObjects().get("камера");   // выбор по имени
+        camera.position.x = tmp.getRectangle().x;
+        camera.position.y = tmp.getRectangle().y;
+        camera.zoom = 0.5f;
+        mapSize = ((RectangleMapObject) map.getLayers().get("объекты").getObjects().get("граница")).getRectangle();
     }
 
     @Override
@@ -61,7 +69,7 @@ public class GameScreen implements Screen {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) lookRight = false;
         if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) lookRight = true;
-        if (xCoordinateForAnimation >= windowWidth - animation.getFrame().getRegionWidth()) lookRight = false;
+        if (xCoordinateForAnimation >= mapSize.width - animation.getFrame().getRegionWidth()) lookRight = false;
         if (xCoordinateForAnimation <= 0) lookRight = true;
 
         if (animation.getFrame().isFlipX() && lookRight) {
@@ -73,10 +81,15 @@ public class GameScreen implements Screen {
         }
 
         if (!lookRight) {
-            xCoordinateForAnimation -= 5;
+            xCoordinateForAnimation -= this.STEP * Gdx.graphics.getDeltaTime();
+            camera.position.x -= this.STEP * Gdx.graphics.getDeltaTime();
         } else {
-            xCoordinateForAnimation += 5;
+            xCoordinateForAnimation += this.STEP * Gdx.graphics.getDeltaTime();
+            camera.position.x += this.STEP * Gdx.graphics.getDeltaTime();
         }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.P) && camera.zoom > 0) camera.zoom -= 0.01f;
+        if (Gdx.input.isKeyPressed(Input.Keys.O)) camera.zoom += 0.01f;
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
             float x = Gdx.input.getX();
@@ -89,16 +102,18 @@ public class GameScreen implements Screen {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(animation.getFrame(), xCoordinateForAnimation, 0);
         batch.draw(img, endGameRec.x, endGameRec.y, endGameRec.width, endGameRec.height);
+        batch.draw(animation.getFrame(), xCoordinateForAnimation, 0);
         batch.end();
 
         mapRender.setView(camera);
         mapRender.render();
 
+        shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.rect(endGameRec.x, endGameRec.y, endGameRec.width, endGameRec.height);
+        shapeRenderer.rect(mapSize.x, mapSize.y, mapSize.width, mapSize.height);
         shapeRenderer.end();
     }
 
@@ -129,5 +144,6 @@ public class GameScreen implements Screen {
         this.batch.dispose();
         this.img.dispose();
         this.animation.dispose();
+        this.map.dispose();
     }
 }
