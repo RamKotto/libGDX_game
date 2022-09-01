@@ -33,6 +33,8 @@ public class GameScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRender;
     private Rectangle mapSize;
+    private final int[] bg;
+    private final int[] l1;
 
     public GameScreen(Main game) {
         animation = new Anim("atlas/run_atlas.atlas", 1 / 10f, Animation.PlayMode.LOOP);
@@ -48,12 +50,22 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         map = new TmxMapLoader().load("map/карта1.tmx");
         mapRender = new OrthogonalTiledMapRenderer(map);
+
         // map.getLayers().get("объекты").getObjects().getByType(RectangleMapObject.class);  // выбор по типу
-        RectangleMapObject tmp = (RectangleMapObject) map.getLayers().get("объекты").getObjects().get("камера");   // выбор по имени
+        RectangleMapObject tmp = (RectangleMapObject) map.getLayers().get("сеттинг").getObjects().get("камера");   // выбор по имени
         camera.position.x = tmp.getRectangle().x;
         camera.position.y = tmp.getRectangle().y;
         camera.zoom = 0.5f;
-        mapSize = ((RectangleMapObject) map.getLayers().get("объекты").getObjects().get("граница")).getRectangle();
+
+//        mapSize = ((RectangleMapObject) map.getLayers().get("объекты").getObjects().get("граница")).getRectangle();
+
+
+
+        bg = new int[1];
+        bg[0] = map.getLayers().getIndex("фон");
+        l1 = new int[4];
+        l1[0] = map.getLayers().getIndex("слой 2");
+        l1[1] = map.getLayers().getIndex("слой 3");
     }
 
     @Override
@@ -64,7 +76,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         camera.update();
-        ScreenUtils.clear(Color.CYAN);
+        ScreenUtils.clear(Color.BLACK);
         animation.setTime(Gdx.graphics.getDeltaTime());
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) lookRight = false;
@@ -91,14 +103,17 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.P) && camera.zoom > 0) camera.zoom -= 0.01f;
         if (Gdx.input.isKeyPressed(Input.Keys.O)) camera.zoom += 0.01f;
 
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            float x = Gdx.input.getX();
-            float y = Gdx.graphics.getHeight() - Gdx.input.getY();
-            if (endGameRec.contains(x, y)) {
-                dispose();
-                game.setScreen(new MenuScreen(game));
-            }
-        }
+//        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+//            float x = Gdx.input.getX();
+//            float y = Gdx.graphics.getHeight() - Gdx.input.getY();
+//            if (endGameRec.contains(x, y)) {
+//                dispose();
+//                game.setScreen(new MenuScreen(game));
+//            }
+//        }
+
+        mapRender.setView(camera);
+        mapRender.render(bg);
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -106,8 +121,7 @@ public class GameScreen implements Screen {
         batch.draw(animation.getFrame(), xCoordinateForAnimation, 0);
         batch.end();
 
-        mapRender.setView(camera);
-        mapRender.render();
+        mapRender.render(l1);
 
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
