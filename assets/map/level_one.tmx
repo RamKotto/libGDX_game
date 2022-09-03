@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="40" height="9" tilewidth="18" tileheight="18" infinite="0" nextlayerid="4" nextobjectid="9">
+ <tileset firstgid="1" name="tiles" tilewidth="18" tileheight="18" spacing="2" tilecount="180" columns="20">
+  <image source="tiles.png" width="398" height="178"/>
+  <tile id="156">
+   <animation>
+    <frame tileid="107" duration="250"/>
+    <frame tileid="108" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer id="1" name="фон" width="40" height="9">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFtAZCQCwMxCID7RAcQA2I1YFYY6AdggNYAXESENsMtEPwgMSBdgAOkAzEKUBcBsQVQNwzsM4Bg3osYl141NdRaF8kHjkmIGamI1ZCw/jUsgAxAAE4Bv0=
+  </data>
+ </layer>
+ <layer id="2" name="слой 2" width="40" height="9">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUDDVQQEOzM6lgRguF+ufiEM9EwsTqwQYodR+9AADD2ARX
+  </data>
+ </layer>
+ <objectgroup id="3" name="объекты">
+  <object id="1" name="камера" x="45" y="100">
+   <point/>
+  </object>
+  <object id="7" name="граница" x="0.666667" y="0" width="718.667" height="162"/>
+ </objectgroup>
+</map>

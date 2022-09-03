@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Boy {
     private Anim moveAnimation;
+    private float FRAME_DURATION = 1 / 10f;
     private float X;
     private float Y;
     private float WIDTH = 48;
@@ -14,7 +15,7 @@ public class Boy {
     private float SPEED = 200;
 
     public Boy() {
-        this.moveAnimation = new Anim("atlas/run_atlas.atlas", 1 / 10f, Animation.PlayMode.LOOP);
+        this.moveAnimation = new Anim("atlas/run_atlas.atlas", FRAME_DURATION, Animation.PlayMode.LOOP);
     }
 
     public TextureRegion move() {
