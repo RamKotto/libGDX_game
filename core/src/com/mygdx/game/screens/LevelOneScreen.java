@@ -27,7 +27,7 @@ public class LevelOneScreen implements Screen {
     private OrthographicCamera camera;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private float CAMERA_ZOOM = 0.5f;
+    private float CAMERA_ZOOM = 0.6f;
 
     // для ограничения перемещения камеры или персонажа
     private Rectangle mapSize;
