@@ -22,7 +22,7 @@ public class MenuScreen implements Screen {
         this.game = game;
         batch = new SpriteBatch();
         img = new Texture("wc3logos/wc3logo.png");
-        startRec = new Rectangle(0, 0, img.getWidth(), img.getHeight());
+        startRec = new Rectangle(0, 0, 100, 100);
         shapeRenderer = new ShapeRenderer();
     }
 
@@ -36,7 +36,7 @@ public class MenuScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
 
         batch.begin();
-        batch.draw(img, 0, 0);
+        batch.draw(img, 0, 0, 100, 100);
         batch.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -49,7 +49,7 @@ public class MenuScreen implements Screen {
             float y = Gdx.graphics.getHeight() - Gdx.input.getY();
             if (startRec.contains(x, y)) {
                 dispose();
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new LevelOneScreen(game));
             }
         }
     }
@@ -79,5 +79,6 @@ public class MenuScreen implements Screen {
         this.batch.dispose();
         this.img.dispose();
         this.shapeRenderer.dispose();
+        this.game.dispose();
     }
 }
