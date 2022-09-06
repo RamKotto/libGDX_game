@@ -40,33 +40,36 @@ public class LevelOneScreen implements Screen {
     private ShapeRenderer shapeRenderer;
     private PhysX physX;
     private Body body;
+    private RectangleMapObject heroObjectFromMap;
+//    private Rectangle realPlayerPosition;
 
     public LevelOneScreen(Main game) {
-        batch = new SpriteBatch();
+        this.batch = new SpriteBatch();
         this.game = game;
-        this.player = new Boy();
 
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        map = new TmxMapLoader().load("map/level_one.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map);
+        this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.map = new TmxMapLoader().load("map/level_one.tmx");
+        this.mapRenderer = new OrthogonalTiledMapRenderer(map);
         camera.zoom = CAMERA_ZOOM;
 
         shapeRenderer = new ShapeRenderer();
 
-        bg = new int[1];
-        l1 = new int[1];
+        this.bg = new int[1];
+        this.l1 = new int[1];
         bg[0] = map.getLayers().getIndex("фон");
         l1[0] = map.getLayers().getIndex("слой 1");
 
-        physX = new PhysX();
-
-        RectangleMapObject cameraObject = (RectangleMapObject) map.getLayers().get("сеттинг").getObjects().get("hero");
-        body = physX.addObject(cameraObject, "boy");
-
+        this.physX = new PhysX();
+        this.heroObjectFromMap = (RectangleMapObject) map.getLayers().get("сеттинг").getObjects().get("hero");
+        this.body = physX.addObject(heroObjectFromMap, "boy");
         Array<RectangleMapObject> objects = map.getLayers().get("объекты").getObjects().getByType(RectangleMapObject.class);
         for (int i = 0; i < objects.size; i++) {
             physX.addObject(objects.get(i), "стена");
         }
+
+        this.player = new Boy(heroObjectFromMap, body);
+
+//        realPlayerPosition = new Rectangle(player.getX(), player.getY(), player.getWidth(), player.getHeight());
     }
 
     @Override
@@ -79,6 +82,7 @@ public class LevelOneScreen implements Screen {
         // позиция камеры
         camera.position.x = body.getPosition().x;
         camera.position.y = body.getPosition().y;
+        System.out.println(body.getLinearVelocity());
 
         // управление зумом
         if (Gdx.input.isKeyPressed(Input.Keys.P) && camera.zoom > 0.2) camera.zoom -= 0.1f;
@@ -88,17 +92,18 @@ public class LevelOneScreen implements Screen {
         camera.update();
 
         // установка заднего фона
-//        ScreenUtils.clear(Color.LIGHT_GRAY);
         ScreenUtils.clear(Color.BLACK);
 
         // отрисовка карты (слой "фон") и указание ее местоположения
         mapRenderer.setView(camera);
         mapRenderer.render(bg);
 
-        // отрисовка игрока, указание его стартовой позиции,ширины и высоты его отображения
         batch.setProjectionMatrix(camera.combined);
+        // отрисовка игрока, указание его стартовой позиции,ширины и высоты его отображения
+//        heroRect.x = body.getPosition().x - heroRect.x / 2 + 7;
+//        heroRect.y = body.getPosition().y - heroRect.y / 2 - 15;
         batch.begin();
-        batch.draw(player.move(), player.getX(), 18, player.getWidth(), player.getHeight());
+        batch.draw(player.move(), player.getX(), player.getY(), player.getWidth(), player.getHeight());
         batch.end();
 
         // отрисовка слоя "слой 1"
@@ -108,10 +113,9 @@ public class LevelOneScreen implements Screen {
 //        shapeRenderer.setProjectionMatrix(camera.combined);
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 //        shapeRenderer.setColor(Color.RED);
-//        for (int i = 0; i < objects.size; i++) {
-//            Rectangle rectObject = objects.get(i).getRectangle();
-//            shapeRenderer.rect(rectObject.x, rectObject.y, rectObject.width, rectObject.height);
-//        }
+//        Rectangle rectObject = heroObjectFromMap.getRectangle();
+//        shapeRenderer.rect(rectObject.x, rectObject.y, rectObject.width, rectObject.height);
+//        shapeRenderer.rect(realPlayerPosition.x, realPlayerPosition.y, realPlayerPosition.width, realPlayerPosition.height);
 //        shapeRenderer.end();
 
         physX.step();

@@ -6,8 +6,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
-import java.util.Optional;
-
 public class PhysX {
     private final World world;
     private final Box2DDebugRenderer debugRenderer;
@@ -37,7 +35,7 @@ public class PhysX {
 
         fixtureDef.shape = polygonShape;
         // трение. Если 0 - то это лёд или даже хуже. Больше 7 - 8, трение становится +- одинаковым.
-        fixtureDef.friction = 0;
+        fixtureDef.friction = 5;
         // плотность
         fixtureDef.density = 1;
         // прыгучесть, упругость. 0 - полностью поглощает инерцию. Если больше - то отскочишь.
@@ -80,6 +78,10 @@ public class PhysX {
 //        // каркас. Одному телу может быть присвоено несколько фикстуров.
 //        FixtureDef fixtureDef = new FixtureDef();
 //        PolygonShape polygonShape = new PolygonShape();
+//
+//        // для кругов и чейновиспользуем другиешэйпы
+//        CircleShape circleShape;
+//        ChainShape chainShape;
 //
 //        def.type = BodyDef.BodyType.StaticBody;
 //        // позиция тела в фзическом движке это середина тела
