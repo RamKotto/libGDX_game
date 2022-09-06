@@ -17,13 +17,10 @@ public class Boy {
     private float width;
     private float height;
     private Body body;
-    private Rectangle rectangle;
-    private float SPEED = 200;
 
     public Boy(RectangleMapObject rectangleMapObject, Body body) {
         this.moveAnimation = new Anim("atlas/run_atlas.atlas", FRAME_DURATION, Animation.PlayMode.LOOP);
         // ширину и высотуполучаем из Rectangle из карты
-        this.rectangle = rectangleMapObject.getRectangle();
         this.height = rectangleMapObject.getRectangle().height;
         this.width = rectangleMapObject.getRectangle().width;
         // позицию по x и y получаем от тела

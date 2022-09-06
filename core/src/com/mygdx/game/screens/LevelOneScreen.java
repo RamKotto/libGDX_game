@@ -99,9 +99,6 @@ public class LevelOneScreen implements Screen {
         mapRenderer.render(bg);
 
         batch.setProjectionMatrix(camera.combined);
-        // отрисовка игрока, указание его стартовой позиции,ширины и высоты его отображения
-//        heroRect.x = body.getPosition().x - heroRect.x / 2 + 7;
-//        heroRect.y = body.getPosition().y - heroRect.y / 2 - 15;
         batch.begin();
         batch.draw(player.move(), player.getX(), player.getY(), player.getWidth(), player.getHeight());
         batch.end();
