@@ -3,6 +3,8 @@ package com.mygdx.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,12 +20,24 @@ public class MenuScreen implements Screen {
     private Rectangle startRec;
     private ShapeRenderer shapeRenderer;
 
+    // lesson 6
+    private final Music music;
+    private final Sound sound;
+
     public MenuScreen(Main game) {
         this.game = game;
         batch = new SpriteBatch();
         img = new Texture("wc3logos/wc3logo.png");
         startRec = new Rectangle(0, 0, 100, 100);
         shapeRenderer = new ShapeRenderer();
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/remix.mp3"));
+        music.setLooping(true);
+//        music.setPan(0, 0.5f);
+        music.setVolume(0.3f);
+        music.play();
+
+        sound = Gdx.audio.newSound(Gdx.files.internal("sounds/menu/toy-shotgun-firing_myx2c5vu.mp3"));
     }
 
     @Override
@@ -50,6 +64,8 @@ public class MenuScreen implements Screen {
             if (startRec.contains(x, y)) {
                 dispose();
                 game.setScreen(new LevelOneScreen(game));
+            } else {
+                sound.play(0.5f);
             }
         }
     }
@@ -80,5 +96,7 @@ public class MenuScreen implements Screen {
         this.img.dispose();
         this.shapeRenderer.dispose();
         this.game.dispose();
+        this.music.dispose();
+        this.sound.dispose();
     }
 }
