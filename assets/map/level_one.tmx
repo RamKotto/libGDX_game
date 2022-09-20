@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="40" height="9" tilewidth="18" tileheight="18" infinite="0" nextlayerid="5" nextobjectid="23">
+ <tileset firstgid="1" name="tiles" tilewidth="18" tileheight="18" spacing="2" tilecount="180" columns="20">
+  <image source="tiles.png" width="398" height="178"/>
+  <tile id="156">
+   <animation>
+    <frame tileid="107" duration="250"/>
+    <frame tileid="108" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer id="1" name="фон" width="40" height="9">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFtAZCQCwMxCID7RAcQA2I1YFYY6AdggNYAXESENsMtEPwgMSBdgAOkAzEKUBcBsQVQNwzsM4Bg3osYl141NdRaF8kHjkmIGamI1ZCw/jUsgAxAAE4Bv0=
+  </data>
+ </layer>
+ <layer id="2" name="слой 1" width="40" height="9">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUDDVQQEOzM6lgRguF+ufiEM9EwsTqwQYodR+9AADD2ARX
+  </data>
+ </layer>
+ <objectgroup id="3" name="сеттинг">
+  <object id="1" name="камера" x="84.3333" y="64.6667">
+   <point/>
+  </object>
+  <object id="14" name="hero" x="48" y="48" width="34.6667" height="46.6667">
+   <properties>
+    <property name="BodyType" value="DynamicBody"/>
+    <property name="gravityScale" type="float" value="10"/>
+    <property name="restitution" type="float" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="объекты" offsetx="0" offsety="1.33333">
+  <object id="9" x="0.666667" y="144" width="502" height="15.3333">
+   <properties>
+    <property name="BodyType" value="StaticBody"/>
+    <property name="gravityScale" type="float" value="1"/>
+    <property name="restitution" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="10" x="575.333" y="144.667" width="143.333" height="16.6667">
+   <properties>
+    <property name="BodyType" value="StaticBody"/>
+    <property name="gravityScale" type="float" value="1"/>
+    <property name="restitution" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="11" x="360" y="126" width="54" height="20">
+   <properties>
+    <property name="BodyType" value="StaticBody"/>
+    <property name="gravityScale" type="float" value="1"/>
+    <property name="restitution" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="12" x="378" y="108.667" width="18" height="36.6667">
+   <properties>
+    <property name="BodyType" value="StaticBody"/>
+    <property name="gravityScale" type="float" value="1"/>
+    <property name="restitution" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="16" x="0" y="-1.33333" width="4" height="161.333">
+   <properties>
+    <property name="BodyType" value="StaticBody"/>
+    <property name="gravityScale" type="float" value="1"/>
+    <property name="restitution" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="18" x="-0.666667" y="-2" width="720.667" height="3.33333">
+   <properties>
+    <property name="BodyType" value="StaticBody"/>
+    <property name="gravityScale" type="float" value="1"/>
+    <property name="restitution" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="20" x="717.333" y="-2.66666" width="2.66667" height="162.667">
+   <properties>
+    <property name="BodyType" value="StaticBody"/>
+    <property name="gravityScale" type="float" value="1"/>
+    <property name="restitution" type="float" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
